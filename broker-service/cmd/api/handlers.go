@@ -10,7 +10,6 @@ import (
 	"fmt"
 	"net/http"
 	"net/rpc"
-	"time"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -266,8 +265,10 @@ func (app *Config) LogViaGRPC(w http.ResponseWriter, r *http.Request) {
 		app.errorJSON(w, err)
 		return
 	}
+	// ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	// defer cancel()
 
-	conn, err := grpc.Dial("logger-service:50001", grpc.WithTransportCredentials(insecure.NewCredentials()), grpc.WithBlock())
+	conn, err := grpc.NewClient("logger-service:50001", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		app.errorJSON(w, err)
 		return
@@ -275,10 +276,8 @@ func (app *Config) LogViaGRPC(w http.ResponseWriter, r *http.Request) {
 	defer conn.Close()
 
 	c := logs.NewLogServiceClient(conn)
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
 
-	_, err = c.WriteLog(ctx, &logs.LogRequest{
+	_, err = c.WriteLog(context.TODO(), &logs.LogRequest{
 		LogEntry: &logs.Log{
 			Name: requestPayload.Log.Name,
 			Data: requestPayload.Log.Data,
