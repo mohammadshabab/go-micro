@@ -18,7 +18,7 @@ func declareExchange(ch *amqp.Channel) error {
 
 func declareRandomQueue(ch *amqp.Channel) (amqp.Queue, error) {
 	return ch.QueueDeclare(
-		"MQ1", //name
+		"",    //name
 		false, //durable
 		false, //delete when unused
 		true,  //exclusive [do not share]

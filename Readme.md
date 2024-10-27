@@ -40,3 +40,19 @@ go install google.golang.org/protobuf/cmd/protoc-gen-go@v1.27
 go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@v1.2
 
 protoc --go_out=. --go_opt=paths=source_relative --go-grpc_out=. --go-grpc_opt=paths=source_relative logs.proto
+
+
+## Docker swarm
+
+Swarm initialized: current node (shdjygvknt4fdmiizg7875ziw) is now a manager.
+
+To add a worker to this swarm, run the following command:
+
+    docker swarm join --token SWMTKN-1-4x7zgquy14ftf3bn21ym2yove1bzg0yg5ifh5z7z9s41masrqa-82e9xcp9mu5m00ac6yoozw4em 192.168.65.3:2377
+
+To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+
+### To get back the token 
+
+docker swarm join-token worker
+docker swarm join-token manager 
